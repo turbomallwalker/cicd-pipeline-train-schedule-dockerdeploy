@@ -62,7 +62,7 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
           
           script {
-            
+            sh "ssh-keyscan ${env.prod_ip} >> ~/.ssh/known_hosts"
             sh "sshpass -p '$USERPASS' ssh $USERNAME@${env.prod_ip} 'docker pull turbomallwalker/train-schedule:${env.BUILD_NUMBER}'"
 
             try {
