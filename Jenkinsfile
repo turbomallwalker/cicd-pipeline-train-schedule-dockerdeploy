@@ -34,7 +34,9 @@ pipeline {
                 }
             }
         }
-        stage ('DeployToProduction') {
+    }   
+}
+stage ('DeployToProduction') {
     when {
         branch 'master'
     }
@@ -43,7 +45,7 @@ pipeline {
         milestone(1)
         withCredentials ([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
             script {
-                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.prod_ip} \"docker pull turbomallwalker/train-schedule:${env.BUILD_NUMBER}\""
+                sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.prod_ip} \"docker pull <turbomallwalker/train-schedule:${env.BUILD_NUMBER}\""
                 try {
                    sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.prod_ip} \"docker stop train-schedule\""
                    sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@${env.prod_ip} \"docker rm train-schedule\""
